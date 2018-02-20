@@ -42,7 +42,7 @@ class CreditCard
         ),
         self::TYPE_MAESTRO => array(
             'type' => self::TYPE_MAESTRO,
-            'pattern' => '/^(5(018|0[23]|[68])|6(05|39|7))/',
+            'pattern' => '/^(5(018|0[23]|[68])|6(05|39|7|220))/',
             'length' => array(12, 13, 14, 15, 16, 17, 18, 19),
             'cvcLength' => array(3),
             'luhn' => true,
@@ -65,13 +65,13 @@ class CreditCard
         self::TYPE_VISA => array(
             'type' => self::TYPE_VISA,
             'pattern' => '/^4/',
-            'length' => array(13, 16),
+            'length' => array(13, 16, 19),
             'cvcLength' => array(3),
             'luhn' => true,
         ),
         self::TYPE_MASTERCARD => array(
             'type' => self::TYPE_MASTERCARD,
-            'pattern' => '/^(5[0-5]|2[2-7])/',
+            'pattern' => '/^(5[0-5]|2(2(2[1-9]|[3-9])|[3-6]|7(0|1|20)))/',
             'length' => array(16),
             'cvcLength' => array(3),
             'luhn' => true,
@@ -87,21 +87,21 @@ class CreditCard
         self::TYPE_DINERS_CLUB => array(
             'type' => self::TYPE_DINERS_CLUB,
             'pattern' => '/^3[0689]/',
-            'length' => array(14),
+            'length' => array(14, 19),
             'cvcLength' => array(3),
             'luhn' => true,
         ),
         self::TYPE_DISCOVER => array(
             'type' => self::TYPE_DISCOVER,
             'pattern' => '/^6([045]|22)/',
-            'length' => array(16),
+            'length' => array(16, 19),
             'cvcLength' => array(3),
             'luhn' => true,
         ),
         self::TYPE_UNION_PAY => array(
             'type' => self::TYPE_UNION_PAY,
             'pattern' => '/^(62|88)/',
-            'length' => array(16, 17, 18, 19),
+            'length' => array(15, 16, 17, 18, 19),
             'cvcLength' => array(3),
             'luhn' => false,
         ),
@@ -186,7 +186,7 @@ class CreditCard
 
     public static function validCvc($cvc, $type)
     {
-        return (ctype_digit($cvc) && array_key_exists($type, self::$cards) && self::validCvcLength($cvc, $type));
+        return (is_numeric($cvc) && array_key_exists($type, self::$cards) && self::validCvcLength($cvc, $type));
     }
 
     public static function validDate($year, $month)
@@ -212,7 +212,7 @@ class CreditCard
     // PROTECTED
     // ---------------------------------------------------------
 
-    protected static function creditCardType($number)
+    public static function creditCardType($number)
     {
         foreach (self::$cards as $type => $card) {
             if (preg_match($card['pattern'], $number)) {
