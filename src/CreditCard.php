@@ -29,6 +29,7 @@ class CreditCard
     const TYPE_UNION_PAY = 'unionpay';
     const TYPE_VISA = 'visa';
     const TYPE_VISA_ELECTRON = 'visaelectron';
+    const TYPE_CARDPLUS = 'cardplus';
 
     protected static $cards = array(
         // Debit cards must come first, since they have more specific patterns than their credit-card equivalents.
@@ -108,6 +109,13 @@ class CreditCard
         self::TYPE_JCB => array(
             'type' => self::TYPE_JCB,
             'pattern' => '/^35/',
+            'length' => array(16),
+            'cvcLength' => array(3),
+            'luhn' => true,
+        ),
+        self::TYPE_CARDPLUS => array(
+            'type' => self::TYPE_CARDPLUS,
+            'pattern' => '/^8860/',
             'length' => array(16),
             'cvcLength' => array(3),
             'luhn' => true,

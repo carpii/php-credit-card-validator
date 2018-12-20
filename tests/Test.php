@@ -91,6 +91,10 @@ class Test extends PHPUnit_Framework_TestCase
             '3530111333300000',
             '3566002020360505',
         ),
+        CreditCard::TYPE_CARDPLUS => array(
+            '8860010001591834',
+            '8860041675918342'
+        ),
     );
 
     protected $invalidCards = array(
